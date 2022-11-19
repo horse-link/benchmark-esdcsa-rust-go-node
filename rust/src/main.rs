@@ -9,7 +9,7 @@ use ethers::types::{Address, Signature};
 use ethers::types::transaction::eip1559::Eip1559TransactionRequest;
 use ethers::types::transaction::eip2718::TypedTransaction;
 
-const REPEAT_COUNT: u32 = 1000;
+const REPEAT_COUNT: u32 = 100_000;
 const THREAD_COUNT: u32 = 100;
 
 fn main() {
