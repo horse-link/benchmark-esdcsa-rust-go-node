@@ -1,12 +1,15 @@
+use std::str::FromStr;
 use std::time::SystemTime;
 use ethers;
 use ethers::abi::Token;
 use ethers::core::types::U256;
 use ethers::prelude::{LocalWallet};
 use std::thread;
-use ethers::types::Signature;
+use ethers::types::{Address, Signature};
+use ethers::types::transaction::eip1559::Eip1559TransactionRequest;
+use ethers::types::transaction::eip2718::TypedTransaction;
 
-const REPEAT_COUNT: u32 = 1_000_000;
+const REPEAT_COUNT: u32 = 1000;
 const THREAD_COUNT: u32 = 100;
 
 fn main() {
@@ -36,7 +39,16 @@ fn hash() -> Signature {
     ]));
     // Sign EIP191 message.
     let signer = get_signer();
-    signer.sign_hash(ethers::utils::hash_message(hash))
+    // Signs the message.
+    let signature = signer.sign_hash(ethers::utils::hash_message(hash));
+    // Build the tx.
+    let address = Address::from_str("0xeC9D1C79A92A6c108b6aa9B101E86d58034843B5").unwrap();
+    let tx = Eip1559TransactionRequest::new()
+        .from(address.clone())
+        .to(address)
+        .value(U256::from(0))
+        .data(signature.to_vec());
+    signer.sign_transaction_sync(&TypedTransaction::Eip1559(tx))
 }
 
 fn get_signer() -> LocalWallet {
