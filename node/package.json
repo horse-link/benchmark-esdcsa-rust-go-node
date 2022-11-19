@@ -1,0 +1,12 @@
+{
+  "name": "benchmark-esdsca",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ethers": "^5.7.2"
+  }
+}
