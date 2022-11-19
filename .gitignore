@@ -1,2 +1,3 @@
 .idea/
-rust/target
+rust/target/
+node_modules/
