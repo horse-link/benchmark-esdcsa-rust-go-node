@@ -18,4 +18,7 @@ The results were obtained on a machine with the following specs:
 
 - Intel i5-9600K (6) @ 4.6 GHz
 - 16 GB of RAM
-- rustc 1.62.0
+
+|     | Rust | Go   | Node   |
+|-----|------|------|--------|
+| ms  | 2430 | 2344 | 156399 |
