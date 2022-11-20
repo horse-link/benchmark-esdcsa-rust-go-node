@@ -4,6 +4,7 @@ import (
     "time"
     "sync"
     "math/big"
+    "crypto/ecdsa"
     "github.com/ethereum/go-ethereum/core/types"
     "github.com/ethereum/go-ethereum/common"
     "github.com/ethereum/go-ethereum/crypto"
@@ -16,18 +17,16 @@ func main() {
     var wg sync.WaitGroup
     wg.Add(REPEAT_COUNT)
     start := time.Now()
+    signer, _ := getSigner()
     for i := 0; i < REPEAT_COUNT; i++ {
-        go hash(&wg)
+        go hash(signer, &wg)
     }
     wg.Wait()
     fmt.Println(time.Since(start).Milliseconds())
 }
 
-func hash(wg *sync.WaitGroup) string {
+func hash(privateKey *ecdsa.PrivateKey, wg *sync.WaitGroup) string {
     defer wg.Done()
-    hexPrivateKey :=
-        "0xbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef"
-    privateKey, _ := crypto.HexToECDSA(hexPrivateKey[2:])
     hashData := solsha3.SoliditySHA3(
 		[]string{"string", "uint256"},
 		[]interface{}{
@@ -54,4 +53,11 @@ func hash(wg *sync.WaitGroup) string {
     txSigned, _ := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
     txHashHex := txSigned.Hash().Hex()
     return txHashHex
+}
+
+func getSigner() (*ecdsa.PrivateKey, error) {
+    hexPrivateKey :=
+        "0xbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef"
+    privateKey, err := crypto.HexToECDSA(hexPrivateKey[2:])
+    return privateKey, err
 }
