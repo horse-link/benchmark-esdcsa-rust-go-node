@@ -26,8 +26,8 @@ fn main() {
 fn hash(signer: &LocalWallet) -> Signature {
     // Hash message.
     let hash = ethers::utils::keccak256(ethers::abi::encode(&[
-        Token::Uint(U256::from(1337)),
         Token::String("The quick brown fox jumps over the lazy dog".to_string()),
+        Token::Uint(U256::from(1337)),
     ]));
     // Sign EIP191 message.
     let signature = signer.sign_hash(ethers::utils::hash_message(hash));
