@@ -2,9 +2,10 @@ const ethers = require("ethers");
 
 const REPEAT_COUNT = 100_000;
 
-const main = () => Promise.all([...Array(REPEAT_COUNT)].map(_ => hash()));
+const main = (signer) =>
+  Promise.all([...Array(REPEAT_COUNT)].map(_ => hash(signer)));
 
-const hash = async () => {
+const hash = async (signer) => {
   const message = ethers.utils.arrayify(ethers.utils.solidityKeccak256(
     ["string", "uint256"],
     [
@@ -12,7 +13,6 @@ const hash = async () => {
       1337
     ]
   ));
-  const signer = getSigner();
   const signature = await signer.signMessage(message);
   const tx = {
     from: "0xeC9D1C79A92A6c108b6aa9B101E86d58034843B5",
@@ -27,8 +27,9 @@ const getSigner = () => new ethers.Wallet(
   "beefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeefbeef"
 );
 
+const signer = getSigner();
 const start = Date.now();
-main().then(() => {
+main(signer).then(() => {
     const duration = Date.now() - start;
-    console.log(`execution took ${duration} milliseconds`);
+    console.log(duration);
 });
