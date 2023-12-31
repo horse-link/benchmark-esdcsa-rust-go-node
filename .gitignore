@@ -4,3 +4,7 @@ node_modules/
 go/main
 go/go.sum
 go/benchmark-esdcsa-rust-go-node
+python/.venv/
+python/.pytest_cache/
+csharp/obj/
+csharp/bin/
